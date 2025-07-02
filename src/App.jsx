@@ -1,14 +1,5 @@
+
 import React, { useState, useEffect } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-  SafeAreaView,
-  ActivityIndicator,
-  Alert,
-} from 'react-native';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
@@ -55,41 +46,39 @@ const AuthScreen = () => {
   };
 
   return (
-    <View style={styles.authContainer}>
-      <Text style={styles.title}>Status Check</Text>
+    <div style={styles.authContainer}>
+      <h1 style={styles.title}>Status Check</h1>
 
-      <TextInput
+      <input
         style={styles.input}
         placeholder="Email"
-        placeholderTextColor="#9ca3af"
         value={email}
-        onChangeText={setEmail}
-        autoCapitalize="none"
+        onChange={(e) => setEmail(e.target.value)}
+        type="email"
       />
-      <TextInput
+      <input
         style={styles.input}
         placeholder="Password"
-        placeholderTextColor="#9ca3af"
         value={password}
-        onChangeText={setPassword}
-        secureTextEntry
+        onChange={(e) => setPassword(e.target.value)}
+        type="password"
       />
 
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
+      {error ? <p style={styles.errorText}>{error}</p> : null}
 
       {loading ? (
-        <ActivityIndicator size="large" color="#22d3ee" />
+        <div style={styles.loading}>Loading...</div>
       ) : (
         <>
-          <TouchableOpacity style={styles.button} onPress={() => handleAuth('login')}>
-            <Text style={styles.buttonText}>Log In</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={[styles.button, styles.signupButton]} onPress={() => handleAuth('signup')}>
-            <Text style={styles.buttonText}>Sign Up</Text>
-          </TouchableOpacity>
+          <button style={styles.button} onClick={() => handleAuth('login')}>
+            Log In
+          </button>
+          <button style={{...styles.button, ...styles.signupButton}} onClick={() => handleAuth('signup')}>
+            Sign Up
+          </button>
         </>
       )}
-    </View>
+    </div>
   );
 };
 
@@ -98,18 +87,18 @@ const LoggedInScreen = () => {
     try {
       await auth.signOut();
     } catch (error) {
-      Alert.alert("Error", error.message);
+      alert("Error: " + error.message);
     }
   };
 
   return (
-    <View style={styles.centered}>
-      <Text style={styles.header}>Welcome!</Text>
-      <Text style={styles.subtitle}>You are logged in.</Text>
-      <TouchableOpacity style={styles.button} onPress={handleLogout}>
-        <Text style={styles.buttonText}>Log Out</Text>
-      </TouchableOpacity>
-    </View>
+    <div style={styles.centered}>
+      <h2 style={styles.header}>Welcome!</h2>
+      <p style={styles.subtitle}>You are logged in.</p>
+      <button style={styles.button} onClick={handleLogout}>
+        Log Out
+      </button>
+    </div>
   );
 };
 
@@ -128,85 +117,96 @@ const App = () => {
 
   if (loading) {
     return (
-      <View style={[styles.container, styles.centered]}>
-        <ActivityIndicator size="large" color="#22d3ee" />
-      </View>
+      <div style={{...styles.container, ...styles.centered}}>
+        <div style={styles.loading}>Loading...</div>
+      </div>
     );
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <div style={styles.container}>
       {user ? <LoggedInScreen /> : <AuthScreen />}
-    </SafeAreaView>
+    </div>
   );
 };
 
 // --- Styles ---
-const styles = StyleSheet.create({
+const styles = {
   container: {
-    flex: 1,
+    minHeight: '100vh',
     backgroundColor: '#111827',
-    justifyContent: 'center',
-  },
-  centered: {
-    flex: 1,
+    display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    padding: 24,
+  },
+  centered: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: '24px',
   },
   authContainer: {
-    flex: 1,
+    display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
-    padding: 24,
+    padding: '24px',
+    maxWidth: '400px',
+    width: '100%',
   },
   title: {
-    fontSize: 32,
+    fontSize: '32px',
     fontWeight: 'bold',
     color: '#22d3ee',
     textAlign: 'center',
-    marginBottom: 32,
+    marginBottom: '32px',
   },
   subtitle: {
-    fontSize: 18,
+    fontSize: '18px',
     color: '#d1d5db',
     textAlign: 'center',
-    marginBottom: 24,
+    marginBottom: '24px',
   },
   input: {
     backgroundColor: '#374151',
     color: '#f9fafb',
-    paddingHorizontal: 16,
-    paddingVertical: 12,
-    borderRadius: 8,
-    fontSize: 16,
-    marginBottom: 16,
+    padding: '12px 16px',
+    borderRadius: '8px',
+    fontSize: '16px',
+    marginBottom: '16px',
+    border: 'none',
+    outline: 'none',
   },
   button: {
     backgroundColor: '#0891b2',
-    padding: 16,
-    borderRadius: 8,
-    alignItems: 'center',
-    marginTop: 8,
+    color: '#ffffff',
+    padding: '16px',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: 'bold',
+    border: 'none',
+    cursor: 'pointer',
+    marginTop: '8px',
   },
   signupButton: {
-      backgroundColor: '#52525b'
-  },
-  buttonText: {
-    color: '#ffffff',
-    fontSize: 16,
-    fontWeight: 'bold',
+    backgroundColor: '#52525b'
   },
   errorText: {
     color: '#ef4444',
     textAlign: 'center',
-    marginBottom: 16,
+    marginBottom: '16px',
   },
   header: {
-    fontSize: 28,
+    fontSize: '28px',
     fontWeight: 'bold',
     color: '#22d3ee',
-    marginBottom: 16,
+    marginBottom: '16px',
   },
-});
+  loading: {
+    color: '#22d3ee',
+    fontSize: '18px',
+    textAlign: 'center',
+  },
+};
 
 export default App;
