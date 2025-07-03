@@ -1,18 +1,19 @@
 {
   "name": "Status Check",
-  "short_name": "StatusCheck",
+  "short_name": "Status Check",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#111827",
-  "description": "A peer support and wellness app.",
+  "theme_color": "#111827",
+  "description": "A secure and private mental wellness app designed to provide immediate peer support for individuals navigating mental health challenges, particularly PTSD and high-stress environments.",
   "icons": [
     {
-      "src": "/icon-192x192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "/icon-512x512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
       "type": "image/png"
     }
